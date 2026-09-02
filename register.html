@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - ForensicVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-body">
+
+    <div class="login-container" style="max-width:1100px;">
+        <div class="login-left">
+            <div class="logo-section">
+                <i class="fas fa-shield-halved"></i>
+                <h1>ForensicVault</h1>
+                <p>Join the Secure Digital Evidence Management Platform</p>
+            </div>
+
+            <div class="security-visual">
+                <i class="fas fa-user-shield"></i>
+            </div>
+
+            <div class="security-badges">
+                <span class="badge"><i class="fas fa-lock"></i> End-to-End Encrypted</span>
+                <span class="badge"><i class="fas fa-user-tie"></i> Verified Officers Only</span>
+                <span class="badge"><i class="fas fa-shield-alt"></i> Compliance Ready</span>
+            </div>
+
+            <div style="margin-top:30px;padding:16px;background:rgba(0,198,255,0.08);border:1px solid rgba(0,198,255,0.2);border-radius:10px;font-size:12px;color:#b0c4de;">
+                <p style="color:#00c6ff;font-weight:600;margin-bottom:8px;"><i class="fas fa-info-circle"></i> Registration Info</p>
+                <ul style="padding-left:16px;line-height:1.7;">
+                    <li>All accounts require role verification</li>
+                    <li>Passwords must be at least 8 characters</li>
+                    <li>Your data is encrypted and secure</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="login-right">
+            <div class="login-header">
+                <h2>Create Account 🚀</h2>
+                <p>Fill in your details to join ForensicVault</p>
+            </div>
+
+            <form id="registerForm" onsubmit="return handleRegister(event)">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <label for="firstName">First Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="firstName" placeholder="John" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <label for="lastName">Last Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label for="username">Username / Badge ID</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-id-badge"></i>
+                        <input type="text" id="username" placeholder="Choose a unique username" required>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="officer@forensicvault.gov" required>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label for="role">Select Role</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user-shield"></i>
+                        <select id="role" required>
+                            <option value="">Choose your role</option>
+                            <option value="administrator">Administrator</option>
+                            <option value="investigator">Investigator</option>
+                            <option value="analyst">Forensic Analyst</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" placeholder="Min 8 characters" required>
+                            <i class="fas fa-eye" onclick="togglePassword('password', this)" style="right:15px;left:auto;cursor:pointer;"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:20px;">
+                        <label for="confirmPassword">Confirm</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirmPassword" placeholder="Repeat password" required>
+                            <i class="fas fa-eye" onclick="togglePassword('confirmPassword', this)" style="right:15px;left:auto;cursor:pointer;"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:20px;">
+                    <label class="remember-me" style="align-items:flex-start;">
+                        <input type="checkbox" id="agreeTerms" style="margin-top:3px;">
+                        <span style="font-size:13px;">I agree to the <a href="#" style="color:#00c6ff;">Terms & Conditions</a> and <a href="#" style="color:#00c6ff;">Privacy Policy</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+
+            <div style="text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid rgba(0,198,255,0.15);">
+                <p style="color:#b0c4de;font-size:13px;margin-bottom:12px;">Already have an account?</p>
+                <a href="login.html" style="color:#00c6ff;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
+                    <i class="fas fa-sign-in-alt"></i> Login Instead
+                </a>
+            </div>
+
+            <div class="back-home">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

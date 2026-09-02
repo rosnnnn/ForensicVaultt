@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - ForensicVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <div class="loader-icon"><i class="fas fa-shield-halved"></i></div>
+            <h2 class="loader-brand">Forensic<span>Vault</span></h2><p class="loader-tagline">Digital Evidence System</p>
+
+            <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+            <p class="loader-text">LOADING USER MANAGEMENT...</p>
+        </div>
+    </div>
+
+    <nav class="top-nav">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="logo">
+        <i class="fas fa-shield-halved"></i>
+        <span>ForensicVault</span>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="top-nav-right">
+        <button class="top-nav-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="notification-icon-wrapper">
+            <div class="notification-icon" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            
+            <div class="notification-dropdown" id="notificationDropdown">
+                <div class="notification-dropdown-header">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="actions">
+                        <button onclick="markAllRead()">Mark all read</button>
+                        <button onclick="clearNotifications()">Clear all</button>
+                    </div>
+                </div>
+                <div class="notification-list" id="notificationList">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+                <div class="user-name" id="userName">John Doe</div>
+                <div class="user-role" id="userRole">Administrator</div>
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </button>
+    </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="cases.html"><i class="fas fa-folder-open"></i> Cases</a></li>
+            <li><a href="evidence.html"><i class="fas fa-database"></i> Evidence</a></li>
+            <li><a href="custody.html"><i class="fas fa-link"></i> Chain of Custody</a></li>
+            <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+            <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="users.html" class="active"><i class="fas fa-users"></i> User Management</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>👥 User Management</h1>
+                <p>Manage system users and their access permissions</p>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn secondary" onclick="exportUsers()"><i class="fas fa-download"></i> Export</button>
+
+                <button class="action-btn" onclick="openAddUserModal()"><i class="fas fa-user-plus"></i> Add User</button>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>24</h3><p>Total Users</p><div class="kpi-trend"><i class="fas fa-arrow-up"></i> +3 this month</div></div>
+                <i class="fas fa-users kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>18</h3><p>Active Now</p><div class="kpi-trend"><i class="fas fa-circle" style="color:#2ecc71;font-size:8px;"></i> Online</div></div>
+                <i class="fas fa-user-check kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>4</h3><p>Administrators</p><div class="kpi-trend"><i class="fas fa-shield-alt"></i> Full access</div></div>
+                <i class="fas fa-user-shield kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>12</h3><p>Investigators</p><div class="kpi-trend"><i class="fas fa-briefcase"></i> Active field</div></div>
+                <i class="fas fa-user-tie kpi-icon"></i>
+            </div>
+        </div>
+
+        <!-- Users Table -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-list" style="color:#00c6ff;margin-right:8px;"></i> All Users</h2>
+                <div class="filter-search" style="max-width:240px;">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="userSearch" placeholder="Search users..." onkeyup="filterUsers()">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Last Login</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td><div class="user-cell"><div class="user-cell-avatar" style="background:linear-gradient(135deg,#00c6ff,#0072ff);">JD</div><div><strong>John Doe</strong><div style="font-size:11px;color:#6b7280;">john@forensicvault.gov</div></div></div></td>
+                                <td><span style="color:#00c6ff;">admin</span></td>
+                                <td><span class="status-badge status-new">Administrator</span></td>
+                                <td><span class="online-dot">● Active</span></td>
+                                <td>Today, 09:42 AM</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening profile...','info')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="showToast('Editing user...','info')"><i class="fas fa-pen"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><div class="user-cell"><div class="user-cell-avatar" style="background:linear-gradient(135deg,#2ecc71,#15803d);">AC</div><div><strong>Analyst A. Chen</strong><div style="font-size:11px;color:#6b7280;">chen@forensicvault.gov</div></div></div></td>
+                                <td><span style="color:#00c6ff;">achen</span></td>
+                                <td><span class="status-badge status-active">Forensic Analyst</span></td>
+                                <td><span class="online-dot">● Active</span></td>
+                                <td>Today, 08:15 AM</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening profile...','info')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="showToast('Editing user...','info')"><i class="fas fa-pen"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><div class="user-cell"><div class="user-cell-avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">JD</div><div><strong>Det. J. Davis</strong><div style="font-size:11px;color:#6b7280;">jdavis@forensicvault.gov</div></div></div></td>
+                                <td><span style="color:#00c6ff;">jdavis</span></td>
+                                <td><span class="status-badge status-new">Investigator</span></td>
+                                <td><span class="online-dot">● Active</span></td>
+                                <td>Yesterday, 05:30 PM</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening profile...','info')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="showToast('Editing user...','info')"><i class="fas fa-pen"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><div class="user-cell"><div class="user-cell-avatar" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">SM</div><div><strong>Ofc. S. Miller</strong><div style="font-size:11px;color:#6b7280;">miller@forensicvault.gov</div></div></div></td>
+                                <td><span style="color:#00c6ff;">smiller</span></td>
+                                <td><span class="status-badge status-active">Investigator</span></td>
+                                <td><span class="offline-dot">● Offline</span></td>
+                                <td>2 days ago</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening profile...','info')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="showToast('Editing user...','info')"><i class="fas fa-pen"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><div class="user-cell"><div class="user-cell-avatar" style="background:linear-gradient(135deg,#a855f7,#7c3aed);">RT</div><div><strong>Det. R. Torres</strong><div style="font-size:11px;color:#6b7280;">torres@forensicvault.gov</div></div></div></td>
+                                <td><span style="color:#00c6ff;">rtorres</span></td>
+                                <td><span class="status-badge status-new">Investigator</span></td>
+                                <td><span class="online-dot">● Active</span></td>
+                                <td>Today, 11:20 AM</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening profile...','info')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="showToast('Editing user...','info')"><i class="fas fa-pen"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/users.js"></script>
+    <script>checkAuth(); loadUserInfo();</script>
+    <script>
+        checkAuth();
+        loadUserInfo();
+
+        function openAddUserModal() {
+            showModal('👤 Add New User',
+                `<div class="modal-form">
+                    <div class="form-row">
+                        <div class="form-group-modal"><label>First Name</label><input type="text" placeholder="First name"></div>
+                        <div class="form-group-modal"><label>Last Name</label><input type="text" placeholder="Last name"></div>
+                    </div>
+                    <div class="form-group-modal"><label>Username / Badge ID</label><input type="text" placeholder="username"></div>
+                    <div class="form-group-modal"><label>Email Address</label><input type="email" placeholder="officer@forensicvault.gov"></div>
+                    <div class="form-row">
+                        <div class="form-group-modal"><label>Role</label><select><option>Investigator</option><option>Forensic Analyst</option><option>Administrator</option></select></div>
+                        <div class="form-group-modal"><label>Temp Password</label><input type="password" placeholder="Min 8 characters"></div>
+                    </div>
+                </div>`,
+                `<button class="btn-modal-ghost" onclick="closeModal()">Cancel</button>
+                 <button class="btn-modal-primary" onclick="closeModal();showToast('New user added successfully!','success')"><i class="fas fa-user-plus"></i> Add User</button>`
+            );
+        }
+    </script>
+</body>
+</html>

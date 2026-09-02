@@ -1,0 +1,229 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Chain of Custody - ForensicVault</title>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+    <body class="dashboard-body">
+
+        <div id="pageLoader" class="page-loader">
+            <div class="loader-content">
+                <div class="loader-icon"><i class="fas fa-shield-halved"></i></div>
+                <h2 class="loader-brand">Forensic<span>Vault</span></h2><p class="loader-tagline">Digital Evidence System</p>
+
+                <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+                <p class="loader-text">LOADING CUSTODY LOGS...</p>
+            </div>
+        </div>
+
+        <nav class="top-nav">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="logo">
+        <i class="fas fa-shield-halved"></i>
+        <span>ForensicVault</span>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="top-nav-right">
+        <button class="top-nav-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="notification-icon-wrapper">
+            <div class="notification-icon" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            
+            <div class="notification-dropdown" id="notificationDropdown">
+                <div class="notification-dropdown-header">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="actions">
+                        <button onclick="markAllRead()">Mark all read</button>
+                        <button onclick="clearNotifications()">Clear all</button>
+                    </div>
+                </div>
+                <div class="notification-list" id="notificationList">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+                <div class="user-name" id="userName">John Doe</div>
+                <div class="user-role" id="userRole">Administrator</div>
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </button>
+    </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                <li><a href="cases.html"><i class="fas fa-folder-open"></i> Cases</a></li>
+                <li><a href="evidence.html"><i class="fas fa-database"></i> Evidence</a></li>
+                <li><a href="custody.html" class="active"><i class="fas fa-link"></i> Chain of Custody</a></li>
+                <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+                <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> User Management</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-header">
+                <div>
+                    <h1>⛓️ Chain of Custody</h1>
+                    <p>Complete tamper-proof evidence access trail with cryptographic signatures</p>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn secondary" onclick="exportCustodyLog()"><i class="fas fa-download"></i> Export Log</button>
+                    <button class="action-btn secondary"><i class="fas fa-filter"></i> Filter</button>
+                </div>
+            </div>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-info"><h3>3,847</h3><p>Total Transfers</p><div class="kpi-trend"><i class="fas fa-arrow-up"></i> +234 today</div></div>
+                    <i class="fas fa-exchange-alt kpi-icon"></i>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info"><h3>1,293</h3><p>Evidence Views</p><div class="kpi-trend"><i class="fas fa-eye"></i> 89 today</div></div>
+                    <i class="fas fa-eye kpi-icon"></i>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info"><h3>7</h3><p>Tamper Attempts</p><div class="kpi-trend" style="color:#ff4757;"><i class="fas fa-shield-alt"></i> All blocked</div></div>
+                    <i class="fas fa-exclamation-triangle kpi-icon"></i>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-info"><h3>23</h3><p>Active Officers</p><div class="kpi-trend"><i class="fas fa-users"></i> Online now</div></div>
+                    <i class="fas fa-users kpi-icon"></i>
+                </div>
+            </div>
+
+            <!-- Info Banner -->
+            <div class="info-banner">
+                <i class="fas fa-info-circle"></i>
+                <span>All custody events are immutable and cryptographically signed. Any tampering triggers immediate security alerts.</span>
+            </div>
+
+            <!-- Timeline -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-stream" style="color:#00c6ff;margin-right:8px;"></i> Full Custody Log</h2>
+                   <select class="filter-select" id="custodyFilter" onchange="filterCustody()">
+    <option value="">All Evidence</option>
+    <option value="EV-103">EV-103</option>
+    <option value="EV-102">EV-102</option>
+    <option value="EV-089">EV-089</option>
+    <option value="CR-247">CR-247</option>
+</select>
+                </div>
+                <div class="card-body">
+                    <div class="custody-timeline">
+                        <div class="ct-item alert">
+                            <div class="ct-dot" style="background:rgba(255,71,87,0.15);color:#ff4757;border-color:#ff4757;">⚠️</div>
+                            <div class="ct-line"></div>
+                            <div class="ct-content">
+                                <h4 style="color:#ff4757;">🚨 Unauthorized Modification Attempt BLOCKED</h4>
+                                <div class="ct-meta">
+                                    <span><i class="fas fa-user-secret"></i> Unknown IP</span>
+                                    <span><i class="fas fa-globe"></i> 192.168.1.45</span>
+                                    <span><i class="fas fa-clock"></i> 02:15 AM · Jan 22, 2025</span>
+                                </div>
+                                <p class="ct-desc">Attempt to modify Evidence EV-089 · Access denied by security system · Incident logged and admin notified</p>
+                            </div>
+                        </div>
+                        <div class="ct-item">
+                            <div class="ct-dot" style="background:rgba(0,198,255,0.15);color:#00c6ff;border-color:#00c6ff;">📤</div>
+                            <div class="ct-line"></div>
+                            <div class="ct-content">
+                                <h4>Evidence Uploaded to System</h4>
+                                <div class="ct-meta">
+                                    <span><i class="fas fa-user"></i> Officer J. Davis</span>
+                                    <span><i class="fas fa-clock"></i> 10:24 AM · Jan 22, 2025</span>
+                                </div>
+                                <p class="ct-desc">Evidence EV-103 uploaded · Size: 4.2 MB · SHA-256 hash generated</p>
+                                <div class="hash-display" style="margin-top:8px;">a3f8c91d2e4b67890f1a2b3c4d5e6f7890a1b2c3d4e5f6789012345678901234</div>
+                            </div>
+                        </div>
+                        <div class="ct-item">
+                            <div class="ct-dot" style="background:rgba(46,204,113,0.15);color:#2ecc71;border-color:#2ecc71;">✅</div>
+                            <div class="ct-line"></div>
+                            <div class="ct-content">
+                                <h4>Hash Integrity Verified</h4>
+                                <div class="ct-meta">
+                                    <span><i class="fas fa-user"></i> Analyst A. Chen</span>
+                                    <span><i class="fas fa-clock"></i> 11:02 AM · Jan 22, 2025</span>
+                                </div>
+                                <p class="ct-desc">Evidence EV-103 · SHA-256 match confirmed · Integrity fully intact</p>
+                            </div>
+                        </div>
+                        <div class="ct-item">
+                            <div class="ct-dot" style="background:rgba(52,152,219,0.15);color:#3498db;border-color:#3498db;">👁️</div>
+                            <div class="ct-line"></div>
+                            <div class="ct-content">
+                                <h4>Evidence Accessed (Read-Only)</h4>
+                                <div class="ct-meta">
+                                    <span><i class="fas fa-user"></i> Det. R. Torres</span>
+                                    <span><i class="fas fa-clock"></i> 02:15 PM · Jan 22, 2025</span>
+                                </div>
+                                <p class="ct-desc">Evidence EV-103 accessed for Case CR-247 · Read-only session · Duration: 24 minutes</p>
+                            </div>
+                        </div>
+                        <div class="ct-item">
+                            <div class="ct-dot" style="background:rgba(155,89,182,0.15);color:#9b59b6;border-color:#9b59b6;">📋</div>
+                            <div class="ct-line"></div>
+                            <div class="ct-content">
+                                <h4>Evidence Transferred to Court</h4>
+                                <div class="ct-meta">
+                                    <span><i class="fas fa-user"></i> Administrator</span>
+                                    <span><i class="fas fa-clock"></i> 03:30 PM · Jan 22, 2025</span>
+                                </div>
+                                <p class="ct-desc">Encrypted transfer completed · Recipient: District Court · Transfer ID: TRX-8823</p>
+                            </div>
+                        </div>
+                        <div class="ct-item">
+                            <div class="ct-dot" style="background:rgba(255,165,2,0.15);color:#ffa502;border-color:#ffa502;">📊</div>
+                            <div class="ct-content">
+                                <h4>Final Report Generated</h4>
+                                <div class="ct-meta">
+                                    <span><i class="fas fa-user"></i> Administrator</span>
+                                    <span><i class="fas fa-clock"></i> 04:30 PM · Jan 22, 2025</span>
+                                </div>
+                                <p class="ct-desc">CR-247 Final Report · PDF format · 42 pages · Digitally signed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="toast-container" id="toastContainer"></div>
+        <script src="js/main.js"></script>
+        <script>checkAuth(); loadUserInfo();</script>
+        <script src="js/main.js"></script>
+<script src="js/custody.js"></script>
+<script>checkAuth(); loadUserInfo();</script>
+    </body>
+    </html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - ForensicVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-body">
+
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <div class="loader-icon"><i class="fas fa-shield-halved"></i></div>
+            <h2 class="loader-brand">Forensic<span>Vault</span></h2><p class="loader-tagline">Digital Evidence System</p>
+
+            <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+            <p class="loader-text">LOADING ANALYTICS...</p>
+        </div>
+    </div>
+
+    <nav class="top-nav">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="logo">
+        <i class="fas fa-shield-halved"></i>
+        <span>ForensicVault</span>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="top-nav-right">
+        <button class="top-nav-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="notification-icon-wrapper">
+            <div class="notification-icon" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            
+            <div class="notification-dropdown" id="notificationDropdown">
+                <div class="notification-dropdown-header">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="actions">
+                        <button onclick="markAllRead()">Mark all read</button>
+                        <button onclick="clearNotifications()">Clear all</button>
+                    </div>
+                </div>
+                <div class="notification-list" id="notificationList">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+                <div class="user-name" id="userName">John Doe</div>
+                <div class="user-role" id="userRole">Administrator</div>
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </button>
+    </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="cases.html"><i class="fas fa-folder-open"></i> Cases</a></li>
+            <li><a href="evidence.html"><i class="fas fa-database"></i> Evidence</a></li>
+            <li><a href="custody.html"><i class="fas fa-link"></i> Chain of Custody</a></li>
+            <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+            <li><a href="analytics.html" class="active"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="users.html"><i class="fas fa-users"></i> User Management</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>📊 Analytics Dashboard</h1>
+                <p>Visual insights into investigations and evidence data</p>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn secondary"><i class="fas fa-calendar"></i> Last 6 Months</button>
+                <button class="action-btn" onclick="exportAnalytics()"><i class="fas fa-download"></i> Export</button>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>247</h3><p>Cases This Year</p><div class="kpi-trend"><i class="fas fa-arrow-up"></i> +18% YoY</div></div>
+                <i class="fas fa-chart-line kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>14 days</h3><p>Avg. Resolution Time</p><div class="kpi-trend"><i class="fas fa-arrow-down"></i> -6% (faster)</div></div>
+                <i class="fas fa-tachometer-alt kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>89%</h3><p>Hash Verification Rate</p><div class="kpi-trend"><i class="fas fa-arrow-up"></i> +2%</div></div>
+                <i class="fas fa-percentage kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>92%</h3><p>Case Closure Rate</p><div class="kpi-trend"><i class="fas fa-arrow-up"></i> +4%</div></div>
+                <i class="fas fa-award kpi-icon"></i>
+            </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="chart-grid">
+            <div class="card">
+                <div class="card-header"><h2><i class="fas fa-chart-pie" style="color:#00c6ff;margin-right:8px;"></i> Cases by Crime Type</h2></div>
+                <div class="card-body">
+                    <div class="chart-container"><canvas id="chartPie"></canvas></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h2><i class="fas fa-chart-bar" style="color:#00c6ff;margin-right:8px;"></i> Cases per Investigator</h2></div>
+                <div class="card-body">
+                    <div class="chart-container"><canvas id="chartBar"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="chart-grid">
+            <div class="card">
+                <div class="card-header"><h2><i class="fas fa-chart-line" style="color:#00c6ff;margin-right:8px;"></i> Monthly Investigation Progress</h2></div>
+                <div class="card-body">
+                    <div class="chart-container tall"><canvas id="chartLine"></canvas></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><h2><i class="fas fa-circle-notch" style="color:#00c6ff;margin-right:8px;"></i> Evidence Categories</h2></div>
+                <div class="card-body">
+                    <div class="chart-container tall"><canvas id="chartDonut"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/main.js"></script>
+    <script src="js/analytics.js"></script>
+    <script>checkAuth(); loadUserInfo();</script>
+    <script>
+        checkAuth();
+        loadUserInfo();
+
+        // Initialize charts after page load
+        setTimeout(() => {
+            Chart.defaults.color = '#b0c4de';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            const gridColor = 'rgba(255,255,255,0.05)';
+
+            new Chart(document.getElementById('chartPie'), {
+                type: 'pie',
+                data: {
+                    labels: ['Cybercrime','Fraud','Identity Theft','Ransomware','Insider','Other'],
+                    datasets: [{
+                        data: [72,54,41,38,28,14],
+                        backgroundColor: ['rgba(0,198,255,0.8)','rgba(52,152,219,0.8)','rgba(155,89,182,0.8)','rgba(255,71,87,0.8)','rgba(255,165,2,0.8)','rgba(46,204,113,0.8)'],
+                        borderColor: 'rgba(15,20,25,0.9)',
+                        borderWidth: 2
+                    }]
+                },
+                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'right'}} }
+            });
+
+            new Chart(document.getElementById('chartBar'), {
+                type: 'bar',
+                data: {
+                    labels: ['Davis','Miller','Chen','Torres','Lee','Kumar'],
+                    datasets: [{ label:'Cases', data:[42,38,31,29,24,19], backgroundColor:'rgba(0,198,255,0.7)', borderRadius:6 }]
+                },
+                options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{grid:{color:gridColor}},y:{grid:{color:gridColor},beginAtZero:true}} }
+            });
+
+            new Chart(document.getElementById('chartLine'), {
+                type: 'line',
+                data: {
+                    labels: ['Jul','Aug','Sep','Oct','Nov','Dec','Jan'],
+                    datasets: [
+                        { label:'Opened', data:[28,34,31,42,38,45,52], borderColor:'#00c6ff', backgroundColor:'rgba(0,198,255,0.1)', borderWidth:2, fill:true, tension:0.4 },
+                        { label:'Closed', data:[22,28,26,35,31,38,44], borderColor:'#2ecc71', backgroundColor:'rgba(46,204,113,0.1)', borderWidth:2, fill:true, tension:0.4 }
+                    ]
+                },
+                options: { responsive:true, maintainAspectRatio:false, scales:{x:{grid:{color:gridColor}},y:{grid:{color:gridColor},beginAtZero:true}} }
+            });
+
+            new Chart(document.getElementById('chartDonut'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Images','Videos','Documents','Audio','Other'],
+                    datasets: [{
+                        data: [412,287,394,156,180],
+                        backgroundColor: ['rgba(52,152,219,0.8)','rgba(155,89,182,0.8)','rgba(46,204,113,0.8)','rgba(255,165,2,0.8)','rgba(0,198,255,0.8)'],
+                        borderColor: 'rgba(15,20,25,0.9)',
+                        borderWidth: 3
+                    }]
+                },
+                options: { responsive:true, maintainAspectRatio:false, cutout:'65%', plugins:{legend:{position:'bottom'}} }
+            });
+        }, 300);
+    </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - ForensicVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <div class="loader-icon"><i class="fas fa-shield-halved"></i></div>
+            <h2 class="loader-brand">Forensic<span>Vault</span></h2>
+<p class="loader-tagline">Digital Evidence System</p>
+<div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+            <p class="loader-text">LOADING SETTINGS...</p>
+        </div>
+    </div>
+
+    <nav class="top-nav">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="logo">
+        <i class="fas fa-shield-halved"></i>
+        <span>ForensicVault</span>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="top-nav-right">
+        <button class="top-nav-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="notification-icon-wrapper">
+            <div class="notification-icon" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            
+            <div class="notification-dropdown" id="notificationDropdown">
+                <div class="notification-dropdown-header">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="actions">
+                        <button onclick="markAllRead()">Mark all read</button>
+                        <button onclick="clearNotifications()">Clear all</button>
+                    </div>
+                </div>
+                <div class="notification-list" id="notificationList">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+                <div class="user-name" id="userName">John Doe</div>
+                <div class="user-role" id="userRole">Administrator</div>
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </button>
+    </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="cases.html"><i class="fas fa-folder-open"></i> Cases</a></li>
+            <li><a href="evidence.html"><i class="fas fa-database"></i> Evidence</a></li>
+            <li><a href="custody.html"><i class="fas fa-link"></i> Chain of Custody</a></li>
+            <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+            <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="users.html"><i class="fas fa-users"></i> User Management</a></li>
+            <li><a href="settings.html" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>⚙️ Settings</h1>
+                <p>System configuration and user preferences</p>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" onclick="saveAllSettings()"><i class="fas fa-save"></i> Save Changes</button>
+
+            </div>
+        </div>
+
+        <div class="settings-grid">
+            <!-- Left Column -->
+            <div>
+                <!-- Profile Settings -->
+                <div class="card" style="margin-bottom:20px;">
+                    <div class="card-header"><h2><i class="fas fa-user-circle" style="color:#00c6ff;margin-right:8px;"></i> Profile Settings</h2></div>
+                    <div class="card-body">
+                        <div class="settings-form">
+                            <div class="form-group-modal"><label>Full Name</label><input type="text" id="setName" placeholder="Your full name"></div>
+                            <div class="form-group-modal"><label>Email Address</label><input type="email" id="setEmail" placeholder="your@email.gov"></div>
+                            <div class="form-group-modal"><label>Role</label><input type="text" id="setRole" readonly style="opacity:0.6;cursor:not-allowed;"></div>
+                            <div class="form-row">
+                                <div class="form-group-modal"><label>New Password</label><input type="password" placeholder="Leave blank to keep"></div>
+                                <div class="form-group-modal"><label>Confirm Password</label><input type="password" placeholder="Confirm new"></div>
+                            </div>
+                            <button class="action-btn" onclick="updateProfile()" style="margin-top:6px;"><i class="fas fa-save"></i> Update Profile</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Session -->
+                <div class="card">
+                    <div class="card-header"><h2><i class="fas fa-sign-out-alt" style="color:#ff4757;margin-right:8px;"></i> Active Session</h2></div>
+                    <div class="card-body">
+                        <p style="color:#b0c4de;font-size:13px;margin-bottom:14px;">Logged in as <strong id="setUser" style="color:#00c6ff;"></strong> · Session started today at 09:42 AM</p>
+                        <button class="action-btn danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> End Session & Logout</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <!-- Security -->
+                <div class="card" style="margin-bottom:20px;">
+                    <div class="card-header"><h2><i class="fas fa-shield-alt" style="color:#2ecc71;margin-right:8px;"></i> Security Settings</h2></div>
+                    <div class="card-body">
+                        <div class="setting-toggle">
+                            <div><div class="st-title">Two-Factor Authentication</div><div class="st-desc">Extra security layer at login</div></div>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="setting-toggle">
+                            <div><div class="st-title">Session Timeout (30 min)</div><div class="st-desc">Auto-logout after inactivity</div></div>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="setting-toggle">
+                            <div><div class="st-title">Audit Logging</div><div class="st-desc">Log all user activities</div></div>
+                            <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="setting-toggle">
+                            <div><div class="st-title">Email Notifications</div><div class="st-desc">Alerts for security events</div></div>
+                            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Info -->
+                <div class="card">
+                    <div class="card-header"><h2><i class="fas fa-info-circle" style="color:#3498db;margin-right:8px;"></i> System Information</h2></div>
+                    <div class="card-body">
+                        <div class="info-list">
+                            <div class="info-row"><span>Version</span><strong>ForensicVault v1.0.0</strong></div>
+                            <div class="info-row"><span>Last Backup</span><strong style="color:#2ecc71;">Today 06:00 AM ✓</strong></div>
+                            <div class="info-row"><span>Encryption</span><strong>AES-256-GCM</strong></div>
+                            <div class="info-row"><span>Compliance</span><strong>ISO 27001, NIST</strong></div>
+                            <div class="info-row"><span>Database</span><strong style="color:#2ecc71;">● Connected</strong></div>
+                            <div class="info-row"><span>Storage Used</span><strong>247.3 GB / 500 GB</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);">
+    <button class="action-btn secondary" onclick="backupData()" style="flex:1;"><i class="fas fa-download"></i> Backup</button>
+    <button class="action-btn danger" onclick="clearAllData()" style="flex:1;"><i class="fas fa-trash"></i> Clear Data</button>
+</div>
+    </main>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="js/main.js"></script>
+    <script src="js/settings.js"></script>
+    <script>checkAuth(); loadUserInfo();</script>
+
+    <script>
+        checkAuth();
+        loadUserInfo();
+
+        // Pre-fill settings
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const name = localStorage.getItem('username') || 'John Doe';
+                const role = localStorage.getItem('role') || 'Administrator';
+                document.getElementById('setName').value = name;
+                document.getElementById('setEmail').value = name.toLowerCase().replace(' ','.') + '@forensicvault.gov';
+                document.getElementById('setRole').value = role.charAt(0).toUpperCase() + role.slice(1);
+                document.getElementById('setUser').textContent = name;
+            }, 100);
+        });
+    </script>
+</body>
+</html>

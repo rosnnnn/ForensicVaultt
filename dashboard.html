@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ForensicVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- Loading Screen -->
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <div class="loader-icon"><i class="fas fa-shield-halved"></i></div>
+            <h2 class="loader-brand">Forensic<span>Vault</span></h2><p class="loader-tagline">Digital Evidence System</p>
+
+            <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+            <p class="loader-text">LOADING DASHBOARD...</p>
+        </div>
+    </div>
+
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="logo">
+        <i class="fas fa-shield-halved"></i>
+        <span>ForensicVault</span>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="top-nav-right">
+        <button class="top-nav-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="notification-icon-wrapper">
+            <div class="notification-icon" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            
+            <div class="notification-dropdown" id="notificationDropdown">
+                <div class="notification-dropdown-header">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="actions">
+                        <button onclick="markAllRead()">Mark all read</button>
+                        <button onclick="clearNotifications()">Clear all</button>
+                    </div>
+                </div>
+                <div class="notification-list" id="notificationList">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+                <div class="user-name" id="userName">John Doe</div>
+                <div class="user-role" id="userRole">Administrator</div>
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </button>
+    </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="cases.html"><i class="fas fa-folder-open"></i> Cases</a></li>
+            <li><a href="evidence.html"><i class="fas fa-database"></i> Evidence</a></li>
+            <li><a href="custody.html"><i class="fas fa-link"></i> Chain of Custody</a></li>
+            <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+            <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="users.html"><i class="fas fa-users"></i> User Management</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div>
+                <h1>Dashboard Overview</h1>
+                <p>Welcome back! Here's what's happening with your cases today.</p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="cases.html" class="action-btn">
+                <i class="fas fa-plus"></i> New Case
+            </a>
+            <a href="evidence.html" class="action-btn">
+                <i class="fas fa-upload"></i> Upload Evidence
+            </a>
+            <a href="reports.html" class="action-btn">
+                <i class="fas fa-file-export"></i> Generate Report
+            </a>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h3>156</h3>
+                    <p>Total Cases</p>
+                    <div class="kpi-trend">
+                        <i class="fas fa-arrow-up"></i> +12% from last month
+                    </div>
+                </div>
+                <i class="fas fa-folder-open kpi-icon"></i>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h3>42</h3>
+                    <p>Active Cases</p>
+                    <div class="kpi-trend">
+                        <i class="fas fa-arrow-up"></i> +8% this week
+                    </div>
+                </div>
+                <i class="fas fa-briefcase kpi-icon"></i>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h3>1,247</h3>
+                    <p>Total Evidence</p>
+                    <div class="kpi-trend">
+                        <i class="fas fa-arrow-up"></i> +156 today
+                    </div>
+                </div>
+                <i class="fas fa-database kpi-icon"></i>
+            </div>
+
+            <div class="kpi-card">
+                <div class="kpi-info">
+                    <h3>1,189</h3>
+                    <p>Evidence Verified</p>
+                    <div class="kpi-trend">
+                        <i class="fas fa-check-circle"></i> 95.3% verified
+                    </div>
+                </div>
+                <i class="fas fa-shield-alt kpi-icon"></i>
+            </div>
+        </div>
+
+        <!-- Recent Cases Table -->
+        <div class="card">
+            <div class="card-header">
+                <h2>Recent Cases</h2>
+                <a href="cases.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Case ID</th>
+                                <th>Crime Type</th>
+                                <th>Assigned Officer</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>CR-2024-001</td>
+                                <td>Cybercrime</td>
+                                <td>Det. Sarah Miller</td>
+                                <td><span class="priority-high"><i class="fas fa-circle"></i> High</span></td>
+                                <td><span class="status-badge status-active">Under Investigation</span></td>
+                                <td>2 hours ago</td>
+                            </tr>
+                            <tr>
+                                <td>CR-2024-002</td>
+                                <td>Fraud</td>
+                                <td>Det. John Anderson</td>
+                                <td><span class="priority-medium"><i class="fas fa-circle"></i> Medium</span></td>
+                                <td><span class="status-badge status-new">New Case</span></td>
+                                <td>5 hours ago</td>
+                            </tr>
+                            <tr>
+                                <td>CR-2024-003</td>
+                                <td>Data Breach</td>
+                                <td>Det. Emily Chen</td>
+                                <td><span class="priority-high"><i class="fas fa-circle"></i> High</span></td>
+                                <td><span class="status-badge status-high">High Priority</span></td>
+                                <td>1 day ago</td>
+                            </tr>
+                            <tr>
+                                <td>CR-2023-187</td>
+                                <td>Identity Theft</td>
+                                <td>Det. Michael Brown</td>
+                                <td><span class="priority-low"><i class="fas fa-circle"></i> Low</span></td>
+                                <td><span class="status-badge status-closed">Closed</span></td>
+                                <td>2 days ago</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts (ORDER MATTERS!) -->
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        checkAuth();
+        loadUserInfo();
+    </script>
+</body>
+</html>

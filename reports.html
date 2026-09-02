@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - ForensicVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <div class="loader-icon"><i class="fas fa-shield-halved"></i></div>
+            <h2 class="loader-brand">Forensic<span>Vault</span></h2><p class="loader-tagline">Digital Evidence System</p>
+
+            <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+            <p class="loader-text">LOADING REPORTS...</p>
+        </div>
+    </div>
+
+    <nav class="top-nav">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="logo">
+        <i class="fas fa-shield-halved"></i>
+        <span>ForensicVault</span>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="top-nav-right">
+        <button class="top-nav-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="notification-icon-wrapper">
+            <div class="notification-icon" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            
+            <div class="notification-dropdown" id="notificationDropdown">
+                <div class="notification-dropdown-header">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="actions">
+                        <button onclick="markAllRead()">Mark all read</button>
+                        <button onclick="clearNotifications()">Clear all</button>
+                    </div>
+                </div>
+                <div class="notification-list" id="notificationList">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+                <div class="user-name" id="userName">John Doe</div>
+                <div class="user-role" id="userRole">Administrator</div>
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </button>
+    </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="cases.html"><i class="fas fa-folder-open"></i> Cases</a></li>
+            <li><a href="evidence.html"><i class="fas fa-database"></i> Evidence</a></li>
+            <li><a href="custody.html"><i class="fas fa-link"></i> Chain of Custody</a></li>
+            <li><a href="reports.html" class="active"><i class="fas fa-file-alt"></i> Reports</a></li>
+            <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="users.html"><i class="fas fa-users"></i> User Management</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>📄 Reports</h1>
+                <p>Generate and manage forensic investigation reports</p>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" onclick="openGenerateReportModal()"><i class="fas fa-plus"></i> Generate Report</button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>84</h3><p>Total Reports</p><div class="kpi-trend"><i class="fas fa-arrow-up"></i> 12 this month</div></div>
+                <i class="fas fa-file-alt kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>61</h3><p>Court Submitted</p><div class="kpi-trend"><i class="fas fa-check-circle"></i> 3 pending</div></div>
+                <i class="fas fa-gavel kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>23</h3><p>Draft Reports</p><div class="kpi-trend" style="color:#ffa502;"><i class="fas fa-clock"></i> 8 awaiting review</div></div>
+                <i class="fas fa-edit kpi-icon"></i>
+            </div>
+        </div>
+
+        <!-- Report Types -->
+        <div class="card" style="margin-bottom:20px;">
+            <div class="card-header"><h2><i class="fas fa-th-large" style="color:#00c6ff;margin-right:8px;"></i> Quick Report Types</h2></div>
+            <div class="card-body">
+                <div class="report-type-grid">
+
+                    <div class="report-type-card" onclick="openGenerateReportModal('Case Summary')">
+                        <div class="rt-icon" style="background:rgba(0,198,255,0.15);color:#00c6ff;">📁</div>
+                        <h3>Case Summary</h3>
+                        <p>Complete overview of case details</p>
+                    </div>
+
+                    <div class="report-type-card" onclick="openGenerateReportModal('Evidence Report')">
+                        <div class="rt-icon" style="background:rgba(46,204,113,0.15);color:#2ecc71;">🗂️</div>
+                        <h3>Evidence Report</h3>
+                        <p>Detailed evidence inventory</p>
+                    </div>
+
+                    <div class="report-type-card" onclick="openGenerateReportModal('Chain of Custody')">
+                        <div class="rt-icon" style="background:rgba(255,165,2,0.15);color:#ffa502;">⛓️</div>
+                        <h3>Custody Log</h3>
+                        <p>Chain of custody documentation</p>
+                    </div>
+
+                    <div class="report-type-card" onclick="openGenerateReportModal('Analytics')">
+                        <div class="rt-icon" style="background:rgba(155,89,182,0.15);color:#9b59b6;">📈</div>
+                        <h3>Analytics Report</h3>
+                        <p>Statistical analysis & insights</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Table -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-list" style="color:#00c6ff;margin-right:8px;"></i> All Reports</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Report ID</th>
+                                <th>Title</th>
+                                <th>Case ID</th>
+                                <th>Type</th>
+                                <th>Generated By</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong style="color:#00c6ff;">RPT-084</strong></td>
+                                <td>Ransomware Investigation Report</td>
+                                <td><strong style="color:#00c6ff;">CR-247</strong></td>
+                                <td><span class="type-tag">Case Summary</span></td>
+                                <td>Administrator</td>
+                                <td><span class="status-badge status-active">Draft</span></td>
+                                <td>Jan 22, 2025</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening report...','info')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="showToast('Downloading PDF...','success')"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><strong style="color:#00c6ff;">RPT-083</strong></td>
+                                <td>Fraud Evidence Summary</td>
+                                <td><strong style="color:#00c6ff;">CR-246</strong></td>
+                                <td><span class="type-tag">Evidence</span></td>
+                                <td>Analyst A. Chen</td>
+                                <td><span class="status-badge status-new">Under Review</span></td>
+                                <td>Jan 21, 2025</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening report...','info')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="showToast('Downloading PDF...','success')"><i class="fas fa-download"></i></button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><strong style="color:#00c6ff;">RPT-081</strong></td>
+                                <td>Phishing Case Final Report</td>
+                                <td><strong style="color:#00c6ff;">CR-241</strong></td>
+                                <td><span class="type-tag">Custody Log</span></td>
+                                <td>Det. R. Torres</td>
+                                <td><span class="status-badge status-closed">Submitted</span></td>
+                                <td>Jan 18, 2025</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening report...','info')"><i class="fas fa-eye"></i></button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><strong style="color:#00c6ff;">RPT-079</strong></td>
+                                <td>Monthly Analytics Report</td>
+                                <td>—</td>
+                                <td><span class="type-tag">Analytics</span></td>
+                                <td>Administrator</td>
+                                <td><span class="status-badge status-closed">Submitted</span></td>
+                                <td>Jan 01, 2025</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="showToast('Opening report...','info')"><i class="fas fa-eye"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/reports.js"></script>
+    <script>
+        checkAuth();
+        loadUserInfo();
+    </script>
+
+</body>
+</html>

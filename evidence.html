@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence - ForensicVault</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <div class="loader-icon"><i class="fas fa-shield-halved"></i></div>
+            <h2 class="loader-brand">Forensic<span>Vault</span></h2><p class="loader-tagline">Digital Evidence System</p>
+
+            <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
+            <p class="loader-text">LOADING EVIDENCE VAULT...</p>
+        </div>
+    </div>
+
+    <nav class="top-nav">
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <div class="logo">
+        <i class="fas fa-shield-halved"></i>
+        <span>ForensicVault</span>
+    </div>
+
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+    </div>
+
+    <div class="top-nav-right">
+        <button class="top-nav-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">
+            <i class="fas fa-moon"></i>
+        </button>
+
+        <div class="notification-icon-wrapper">
+            <div class="notification-icon" onclick="toggleNotifications()">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+            </div>
+            
+            <div class="notification-dropdown" id="notificationDropdown">
+                <div class="notification-dropdown-header">
+                    <h3><i class="fas fa-bell"></i> Notifications</h3>
+                    <div class="actions">
+                        <button onclick="markAllRead()">Mark all read</button>
+                        <button onclick="clearNotifications()">Clear all</button>
+                    </div>
+                </div>
+                <div class="notification-list" id="notificationList">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+                <div class="user-name" id="userName">John Doe</div>
+                <div class="user-role" id="userRole">Administrator</div>
+            </div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </button>
+    </div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileMenu()"></div>
+
+    <aside class="sidebar">
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="cases.html"><i class="fas fa-folder-open"></i> Cases</a></li>
+            <li><a href="evidence.html" class="active"><i class="fas fa-database"></i> Evidence</a></li>
+            <li><a href="custody.html"><i class="fas fa-link"></i> Chain of Custody</a></li>
+            <li><a href="reports.html"><i class="fas fa-file-alt"></i> Reports</a></li>
+            <li><a href="analytics.html"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="users.html"><i class="fas fa-users"></i> User Management</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div>
+                <h1>🗂️ Evidence Management</h1>
+                <p>Manage digital evidence with tamper-proof hash verification</p>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn secondary" onclick="openVerifyModal()"><i class="fas fa-fingerprint"></i> Verify Hash</button>
+                <button class="action-btn" onclick="openUploadModal()"><i class="fas fa-upload"></i> Upload Evidence</button>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>1,429</h3><p>Total Evidence</p><div class="kpi-trend"><i class="fas fa-arrow-up"></i> +156 this week</div></div>
+                <i class="fas fa-database kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>1,287</h3><p>Hash Verified</p><div class="kpi-trend"><i class="fas fa-check-circle"></i> 90% verified</div></div>
+                <i class="fas fa-shield-alt kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>142</h3><p>Pending Verification</p><div class="kpi-trend" style="color:#ffa502;"><i class="fas fa-clock"></i> Awaiting analysis</div></div>
+                <i class="fas fa-hourglass-half kpi-icon"></i>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-info"><h3>3</h3><p>Tamper Alerts</p><div class="kpi-trend" style="color:#ff4757;"><i class="fas fa-exclamation-triangle"></i> Requires review</div></div>
+                <i class="fas fa-exclamation-triangle kpi-icon"></i>
+            </div>
+        </div>
+
+        <!-- Evidence Type Cards -->
+        <div class="card" style="margin-bottom:20px;">
+            <div class="card-header"><h2><i class="fas fa-th" style="color:#00c6ff;margin-right:8px;"></i> Evidence Categories</h2></div>
+            <div class="card-body">
+                <div class="evidence-type-grid">
+                    <div class="evidence-type-card"><div class="et-icon" style="color:#3498db;">🖼️</div><h3>412</h3><p>Images</p></div>
+                    <div class="evidence-type-card"><div class="et-icon" style="color:#9b59b6;">🎬</div><h3>287</h3><p>Videos</p></div>
+                    <div class="evidence-type-card"><div class="et-icon" style="color:#2ecc71;">📄</div><h3>394</h3><p>Documents</p></div>
+                    <div class="evidence-type-card"><div class="et-icon" style="color:#ffa502;">🎵</div><h3>156</h3><p>Audio Files</p></div>
+                    <div class="evidence-type-card"><div class="et-icon" style="color:#00c6ff;">💾</div><h3>180</h3><p>Other Files</p></div>
+                </div>
+            </div>
+        </div>
+
+<!-- Find this filter-bar section and update: -->
+<div class="filter-bar">
+    <div class="filter-search">
+        <i class="fas fa-search"></i>
+        <input type="text" id="evSearch" placeholder="Search evidence ID, description..." onkeyup="filterEvidence()">
+    </div>
+    <select class="filter-select" id="evTypeFilter" onchange="filterEvidence()">
+        <option value="">All Types</option>
+        <option value="image">Image</option>
+        <option value="video">Video</option>
+        <option value="document">Document</option>
+        <option value="audio">Audio</option>
+    </select>
+    <select class="filter-select" id="evStatusFilter" onchange="filterEvidence()">
+        <option value="">All Status</option>
+        <option value="verified">Verified</option>
+        <option value="pending">Pending</option>
+        <option value="tamper">Tamper Alert</option>
+    </select>
+</div>
+
+<!-- Add ID to the table -->
+<table id="evidenceTable">
+    <!-- ... -->
+</table>
+        <!-- Evidence Table -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-list" style="color:#00c6ff;margin-right:8px;"></i> Evidence Registry</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Evidence ID</th>
+                                <th>Type</th>
+                                <th>Case ID</th>
+                                <th>Description</th>
+                                <th>Uploaded By</th>
+                                <th>Hash Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong style="color:#00c6ff;">EV-103</strong></td>
+                                <td><span class="type-tag"><i class="fas fa-image" style="color:#3498db;"></i> Image</span></td>
+                                <td><strong style="color:#00c6ff;">CR-247</strong></td>
+                                <td>Screenshot of ransom note</td>
+                                <td>Det. J. Davis</td>
+                                <td><span class="status-badge status-closed">✓ Verified</span></td>
+                                <td>Jan 22, 2025</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="viewEvidence('EV-103')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="openVerifyModal()"><i class="fas fa-fingerprint"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:#00c6ff;">EV-102</strong></td>
+                                <td><span class="type-tag"><i class="fas fa-file-alt" style="color:#2ecc71;"></i> Document</span></td>
+                                <td><strong style="color:#00c6ff;">CR-246</strong></td>
+                                <td>Bank transaction records</td>
+                                <td>Ofc. S. Miller</td>
+                                <td><span class="status-badge status-closed">✓ Verified</span></td>
+                                <td>Jan 21, 2025</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="viewEvidence('EV-102')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="openVerifyModal()"><i class="fas fa-fingerprint"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:#00c6ff;">EV-101</strong></td>
+                                <td><span class="type-tag"><i class="fas fa-video" style="color:#9b59b6;"></i> Video</span></td>
+                                <td><strong style="color:#00c6ff;">CR-244</strong></td>
+                                <td>CCTV footage recording</td>
+                                <td>Det. R. Torres</td>
+                                <td><span class="status-badge status-active">⏳ Pending</span></td>
+                                <td>Jan 20, 2025</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="viewEvidence('EV-101')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn edit" onclick="openVerifyModal()"><i class="fas fa-fingerprint"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong style="color:#00c6ff;">EV-089</strong></td>
+                                <td><span class="type-tag"><i class="fas fa-volume-up" style="color:#ffa502;"></i> Audio</span></td>
+                                <td><strong style="color:#00c6ff;">CR-241</strong></td>
+                                <td>Recorded phone call</td>
+                                <td>Ofc. K. Lee</td>
+                                <td><span class="status-badge status-high">⚠ Tamper Alert</span></td>
+                                <td>Jan 18, 2025</td>
+                                <td>
+                                    <button class="tbl-btn view" onclick="viewEvidence('EV-089')"><i class="fas fa-eye"></i></button>
+                                    <button class="tbl-btn del" onclick="showToast('Flagged for review','warning')"><i class="fas fa-flag"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/main.js"></script>
+    <script>
+        checkAuth();
+        loadUserInfo();
+
+        function openUploadModal() {
+            showModal('📤 Upload New Evidence',
+                `<div class="modal-form">
+                    <div class="drop-zone">
+                        <div style="font-size:38px;margin-bottom:10px;">📂</div>
+                        <p style="color:#b0c4de;font-size:14px;">Drag & drop files or <span style="color:#00c6ff;font-weight:600;cursor:pointer;">click to browse</span></p>
+                        <p style="color:#6b7280;font-size:11px;margin-top:6px;">Images, videos, documents, audio (Max 500MB)</p>
+                    </div>
+                    <div class="form-group-modal"><label>Linked Case ID</label><input type="text" placeholder="e.g., CR-247"></div>
+                    <div class="form-group-modal"><label>Evidence Type</label><select><option>Digital Image</option><option>Video</option><option>Document</option><option>Audio File</option></select></div>
+                    <div class="form-group-modal"><label>Description</label><textarea placeholder="Brief description..."></textarea></div>
+                </div>`,
+                `<button class="btn-modal-ghost" onclick="closeModal()">Cancel</button>
+                 <button class="btn-modal-primary" onclick="closeModal();showToast('EV-104 uploaded & hash generated!','success')"><i class="fas fa-upload"></i> Upload</button>`
+            );
+        }
+
+        function openVerifyModal() {
+            showModal('🔐 Verify Hash Integrity',
+                `<p style="margin-bottom:14px;color:#b0c4de;">Verify SHA-256 hash to confirm evidence integrity.</p>
+                 <div class="modal-form">
+                    <div class="form-group-modal"><label>Evidence ID</label><input type="text" placeholder="e.g., EV-103" value="EV-103"></div>
+                 </div>
+                 <div class="hash-info-box">
+                    <strong style="color:#2ecc71;">✅ Last Verified:</strong> EV-103
+                    <div class="hash-display">a3f8c91d2e4b67890f1a2b3c4d5e6f7890a1b2c3d4e5f6789012345678901234</div>
+                 </div>`,
+                `<button class="btn-modal-ghost" onclick="closeModal()">Cancel</button>
+                 <button class="btn-modal-primary" onclick="closeModal();showToast('Hash verified! Evidence intact.','success')"><i class="fas fa-fingerprint"></i> Verify Now</button>`
+            );
+        }
+
+        function viewEvidence(id) {
+            showModal(`🗂️ Evidence — ${id}`,
+                `<div class="detail-grid">
+                    <div class="detail-item"><label>Evidence ID</label><strong style="color:#00c6ff;">${id}</strong></div>
+                    <div class="detail-item"><label>Status</label><span class="status-badge status-closed">✓ Verified</span></div>
+                    <div class="detail-item full"><label>SHA-256 Hash</label><div class="hash-display">a3f8c91d2e4b67890f1a2b3c4d5e6f7890a1b2c3d4e5f6789012345678901234</div></div>
+                    <div class="detail-item full"><label>Upload Info</label><span>Uploaded by Det. J. Davis · Jan 22, 2025 · 4.2 MB</span></div>
+                    <div class="detail-item full"><label>Linked Case</label><span style="color:#00c6ff;">CR-247 - Ransomware Attack</span></div>
+                 </div>`,
+                `<button class="btn-modal-ghost" onclick="closeModal()">Close</button>
+                 <button class="btn-modal-primary" onclick="closeModal();openVerifyModal()"><i class="fas fa-fingerprint"></i> Re-Verify Hash</button>`
+            );
+        }
+    </script>
+    <script src="js/main.js"></script>
+<script src="js/evidence.js"></script>
+<script>
+    checkAuth();
+    loadUserInfo();
+</script>
+</body>
+</html>
